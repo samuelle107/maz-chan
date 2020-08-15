@@ -38,7 +38,7 @@ async def on_member_join(member):
     await channel.send(f'Irasshaimase, {member.mention} \n\nRead the rules at <#{RULES_CHANNEL_ID}>')
 
 # Used to tag someone and paste a copy pasta
-# !shutup <@user>
+# !flame <@user>
 @client.command()
 async def flame(ctx, member : discord.Member):
     channel = client.get_channel(GENERAL_CHAT_CHANNEL_ID)
@@ -58,7 +58,7 @@ async def flame(ctx, member : discord.Member):
     await channel.send(message)
 
 # Used to tag someone and paste a copy pasta
-# !shutup <@user>
+# !idiot <@user>
 @client.command()
 async def idiot(ctx, member : discord.Member):
     channel = client.get_channel(GENERAL_CHAT_CHANNEL_ID)
