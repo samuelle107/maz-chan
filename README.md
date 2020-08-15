@@ -2,7 +2,7 @@
 ### Background
 What is the MAZ? The MAZ is not a place. It is not a thing. It is a common goal that people seek. It is the idea of freedom. MAZ Chan is used to help us achieve that goal.
 ### Serious Description
-MAZ Chan is a discord bot for a server.
+MAZ Chan is a discord bot for a server. It is built and maintained by members of that server.
 
 ## Setting up
 ### Prerequisites
