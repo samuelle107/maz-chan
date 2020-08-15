@@ -28,7 +28,7 @@ async def on_member_join(member):
 
     await member.add_roles(role)
     await channel.send(url)
-    await channel.send(f'Irasshaimase, {member.mention} \n\n Read the rules at <#{int(RULES_CHANNEL_ID)}>')
+    await channel.send(f'Irasshaimase, {member.mention} \n\nRead the rules at <#{int(RULES_CHANNEL_ID)}>')
 
 @client.command()
 async def flame(ctx, member : discord.Member):
