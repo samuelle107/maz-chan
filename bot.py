@@ -22,26 +22,26 @@ client = commands.Bot(command_prefix='!')
 
 @client.event
 async def on_ready():
-    channel = client.get_channel(int(BOT_TESTING_CHANNEL_ID))
+    channel = client.get_channel(BOT_TESTING_CHANNEL_ID)
     await channel.send("MAZ Chan is ready!")
 
 # Called when a new member joins
 # Will add them to a refugee role, send a gif, and message
 @client.event
 async def on_member_join(member):
-    channel = client.get_channel(int(WELCOME_CHANNEL_ID))
+    channel = client.get_channel(WELCOME_CHANNEL_ID)
     url = "https://imgur.com/ANEL8c3"
     role = discord.utils.get(member.guild.roles, name="Refugee")
 
     await member.add_roles(role)
     await channel.send(url)
-    await channel.send(f'Irasshaimase, {member.mention} \n\nRead the rules at <#{int(RULES_CHANNEL_ID)}>')
+    await channel.send(f'Irasshaimase, {member.mention} \n\nRead the rules at <#{RULES_CHANNEL_ID}>')
 
 # Used to tag someone and paste a copy pasta
 # !shutup <@user>
 @client.command()
 async def flame(ctx, member : discord.Member):
-    channel = client.get_channel(int(GENERAL_CHAT_CHANNEL_ID))
+    channel = client.get_channel(GENERAL_CHAT_CHANNEL_ID)
     message = f"""What the fuck did you just fucking say about me, you little bitch? 
     I'll have you know I graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills. 
     I am trained in gorilla warfare and I'm the top sniper in the entire US armed forces. 
@@ -61,7 +61,7 @@ async def flame(ctx, member : discord.Member):
 # !shutup <@user>
 @client.command()
 async def idiot(ctx, member : discord.Member):
-    channel = client.get_channel(int(GENERAL_CHAT_CHANNEL_ID))
+    channel = client.get_channel(GENERAL_CHAT_CHANNEL_ID)
     message = f"""You idiot, You absolute bafoon, 
     You’ve made yourself a laughingstock, You uneducated monkey, Your stupidity is mindblowing to me, 
     I cant believe you just made that statement, You absolute moron, You have acted like a total fool, a total clown, 
@@ -85,7 +85,7 @@ async def prawn(ctx):
 # !shutup <@user>
 @client.command()
 async def shutup(ctx, member : discord.Member):
-    channel = client.get_channel(int(GENERAL_CHAT_CHANNEL_ID))
+    channel = client.get_channel(GENERAL_CHAT_CHANNEL_ID)
     message = f"""I know you have something to say, and I know you are eager to say it, So I'll get straight to the point: Shut the fuck up Nobody wants to hear it, nobody will ever want to hear it, nobody cares! 
     And the fact you thought someone might care is honestly baffling to me. I've actually polled the entire world: Here's a composite of the faces of everybody who wants you to shut the fuck up, 
     It seems as if this is a composite of every human being on the planet, Interesting. Now for a composite of the faces that, want you to keep talking: Interesting it seems as if nothing has happened. 
@@ -100,9 +100,9 @@ async def shutup(ctx, member : discord.Member):
 @client.command()
 async def clone(ctx, *args):
     messages_ago = int(args[0]) + 1
-    target_channel_id = "".join([(s) for s in args[1] if s.isdigit()])
+    target_channel_id = int("".join([(s) for s in args[1] if s.isdigit()]))
 
-    channel = client.get_channel(int(target_channel_id))
+    channel = client.get_channel(target_channel_id)
     messages = await ctx.history(limit=messages_ago).flatten()
     message = f"{messages[-1].author.mention} said: {messages[-1].attachments[0].url if len(messages[-1].attachments) > 0 else messages[-1].content}"
 
