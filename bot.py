@@ -25,6 +25,8 @@ async def on_ready():
     channel = client.get_channel(int(BOT_TESTING_CHANNEL_ID))
     await channel.send("MAZ Chan is ready!")
 
+# Called when a new member joins
+# Will add them to a refugee role, send a gif, and message
 @client.event
 async def on_member_join(member):
     channel = client.get_channel(int(WELCOME_CHANNEL_ID))
@@ -35,6 +37,8 @@ async def on_member_join(member):
     await channel.send(url)
     await channel.send(f'Irasshaimase, {member.mention} \n\nRead the rules at <#{int(RULES_CHANNEL_ID)}>')
 
+# Used to tag someone and paste a copy pasta
+# !shutup <@user>
 @client.command()
 async def flame(ctx, member : discord.Member):
     channel = client.get_channel(int(GENERAL_CHAT_CHANNEL_ID))
@@ -53,6 +57,8 @@ async def flame(ctx, member : discord.Member):
 
     await channel.send(message)
 
+# Used to tag someone and paste a copy pasta
+# !shutup <@user>
 @client.command()
 async def idiot(ctx, member : discord.Member):
     channel = client.get_channel(int(GENERAL_CHAT_CHANNEL_ID))
@@ -63,14 +69,20 @@ async def idiot(ctx, member : discord.Member):
 
     await channel.send(message)
 
+# Used to paste copy pasta
+# !egghead
 @client.command()
 async def egghead(ctx):
     await ctx.send("https://media.discordapp.net/attachments/668640100367990793/714849219231613029/unknown.png")
 
+# Used to paste copy pasta
+# !prawn
 @client.command()
 async def prawn(ctx):
     await ctx.send("ANOTHA PRAWN ON THE BAWBIE")
 
+# Used to tag someone and paste a copy pasta
+# !shutup <@user>
 @client.command()
 async def shutup(ctx, member : discord.Member):
     channel = client.get_channel(int(GENERAL_CHAT_CHANNEL_ID))
@@ -83,6 +95,8 @@ async def shutup(ctx, member : discord.Member):
 
     await channel.send(message)
 
+# Used to clone a message to a different channel
+# !clone <number of messages ago> <#channel>
 @client.command()
 async def clone(ctx, *args):
     messages_ago = int(args[0]) + 1
