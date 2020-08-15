@@ -6,6 +6,7 @@ MAZ Chan is a discord bot for a server.
 
 ## Setting up
 ### Prerequisites
+- git
 - python3
 - pip3
 ### Installation
