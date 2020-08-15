@@ -15,3 +15,6 @@ MAZ Chan is a discord bot for a server.
 3a. Note, if you make your own bot, you need to change the channel IDs in `bot.py`.
 4. Run `pip3 install requirements.txt` to get all of the packages.
 5. Run `python3 bot.py` to start the bot.
+
+## Deployment
+To deploy the code, you need access to push to my Heroku repository. Contact me for more information.
