@@ -1,6 +1,5 @@
 import datetime
 import discord
-import pprint
 import os
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -24,7 +23,7 @@ async def on_ready():
 @client.event
 async def on_member_join(member):
     channel = client.get_channel(int(WELCOME_CHANNEL_ID))
-    url = "https://www.gifdeliverynetwork.com/bestsadgavial"
+    url = "https://imgur.com/ANEL8c3"
     role = discord.utils.get(member.guild.roles, name="Refugee")
 
     await member.add_roles(role)
