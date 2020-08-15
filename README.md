@@ -10,7 +10,7 @@ MAZ Chan is a discord bot for a server.
 - python3
 - pip3
 ### Installation
-1. Run `git clone https://github.com/samuelle107/maz-chan.git` at where ever you want to clone it.
+1. Run `git clone https://github.com/samuelle107/maz-chan.git` at wherever you want to clone it.
 2. Make a .env file at the root of the repository.
 3. Add the content `DISCORD_BOT_TOKEN=xxx` to line 1. xxx is the bot token. Either ask me for it or make your own bot. Note, if you make your own bot, you need to change the channel IDs in `bot.py`.
 4. Run `pip3 install requirements.txt` to get all of the packages.
