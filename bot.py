@@ -108,4 +108,12 @@ async def clone(ctx, *args):
 
     await channel.send(message)
 
+
+@client.command()
+async def gugl(ctx, *args):
+    base_url = "https://www.google.com/search?"
+    query = f"q={'+'.join(args)}"
+    await ctx.send(base_url + query)
+
 client.run(DISCORD_BOT_TOKEN)
+
