@@ -62,6 +62,7 @@ async def clone(ctx, *args):
 
     await channel.send(message)
 
+
 @client.command()
 async def gugl(ctx, *args):
     base_url = "https://www.google.com/search?"
