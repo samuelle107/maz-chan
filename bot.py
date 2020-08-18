@@ -13,11 +13,11 @@ load_dotenv()
 # DISCORD_BOT_TOKEN=xxxx
 DISCORD_BOT_TOKEN = os.environ['DISCORD_BOT_TOKEN']
 # These values are found by right clicking on the channel and then clicking copy ID
-WELCOME_CHANNEL_ID =  744054264640569355
-BOT_COMMANDS_CHANNEL_ID =  744057858886336552
-BOT_TESTING_CHANNEL_ID =  744065526023847957
+WELCOME_CHANNEL_ID = 744054264640569355
+BOT_COMMANDS_CHANNEL_ID = 744057858886336552
+BOT_TESTING_CHANNEL_ID = 744065526023847957
 GENERAL_CHAT_CHANNEL_ID = 744030856196390994
-RULES_CHANNEL_ID =  744047107866099813
+RULES_CHANNEL_ID = 744047107866099813
 
 client = commands.Bot(command_prefix='!')
 
@@ -50,7 +50,8 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content[0] == "~" and message.content[1:] in create_command.CUSTOM_COMMAND_LIST.keys():
+    if message.content[0] == "~" and message.content[
+            1:] in create_command.CUSTOM_COMMAND_LIST.keys():
         print(create_command.CUSTOM_COMMAND_LIST)
         await message.channel.send(
             create_command.CUSTOM_COMMAND_LIST[message.content[1:]])
@@ -86,6 +87,7 @@ async def list_custom_commands(ctx):
     for k, v in create_command.CUSTOM_COMMAND_LIST:
         formatted_string += f"`{k}`: `{v}`\n"
     await ctx.send(formatted_string)
+
 
 @client.command()
 async def remove_command(ctx, *args):
