@@ -78,20 +78,6 @@ async def clid(ctx, *args):
     message = f"{message_data.author.mention} said: {message_data.attachments[0].url if len(message_data.attachments) > 0 else message_data.content}"
     await channel.send(message)
 
-# Used to cut message by id
-# !cid id <#channel>
-@client.command()
-async def cid(ctx, *args):
-    id = int(args[0])
-    target_channel_id = int("".join([(s) for s in args[1] if s.isdigit()]))
-    channel = client.get_channel(target_channel_id)
-    message_data = await ctx.channel.fetch_message(id)
-
-    message = f"{message_data.author.mention} said: {message_data.attachments[0].url if len(message_data.attachments) > 0 else message_data.content}"
-    await message_data.delete()
-    await channel.send(message)
-
-
 @client.command()
 async def gugl(ctx, *args):
     base_url = "https://www.google.com/search?"
