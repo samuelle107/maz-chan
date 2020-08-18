@@ -49,6 +49,9 @@ async def egghead(ctx):
 async def prawn(ctx):
     await ctx.send("ANOTHA PRAWN ON THE BAWBIE")
 
+async def test(ctx):
+    await ctx.send("hello")
+
 # Used to clone a message to a different channel
 # !clone <number of messages ago> <#channel>
 @client.command()
