@@ -49,6 +49,7 @@ async def egghead(ctx):
 async def prawn(ctx):
     await ctx.send("ANOTHA PRAWN ON THE BAWBIE")
 
+@client.command()
 async def test(ctx):
     await ctx.send("hello")
 
