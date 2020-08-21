@@ -154,5 +154,4 @@ async def rcc(ctx, *args):
     else:
         await ctx.send(f"No such command `{command_name}`")
 
-
 client.run(DISCORD_BOT_TOKEN)
