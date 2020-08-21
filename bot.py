@@ -43,17 +43,17 @@ async def on_member_join(member):
     )
 
 
-# called when any message is sent
-# this event is used to check if custom command is used
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
+# # called when any message is sent
+# # this event is used to check if custom command is used
+# @client.event
+# async def on_message(message):
+#     if message.author == client.user:
+#         return
 
-    if message.content[0] == "~" and message.content[
-            1:] in create_command.CUSTOM_COMMAND_LIST.keys():
-        await message.channel.send(
-            create_command.CUSTOM_COMMAND_LIST[message.content[1:]])
+#     if message.content[0] == "~" and message.content[
+#             1:] in create_command.CUSTOM_COMMAND_LIST.keys():
+#         await message.channel.send(
+#             create_command.CUSTOM_COMMAND_LIST[message.content[1:]])
 
 
 # Used to paste copy pasta
