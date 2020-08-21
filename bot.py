@@ -75,7 +75,7 @@ async def prawn(ctx):
 async def test(ctx):
     await ctx.send("hello")
 
-
+    
 # Used to clone a message to a different channel
 # !cl <number of messages ago> <#channel>
 @client.command()
@@ -89,6 +89,17 @@ async def cl(ctx, *args):
 
     await channel.send(message)
 
+# Used to clone a message by id
+# !clid id <#channel>
+@client.command()
+async def clid(ctx, *args):
+    id = int(args[0])
+    target_channel_id = int("".join([(s) for s in args[1] if s.isdigit()]))
+    channel = client.get_channel(target_channel_id)
+    message_data = await ctx.channel.fetch_message(id)
+
+    message = f"{message_data.author.mention} said: {message_data.attachments[0].url if len(message_data.attachments) > 0 else message_data.content}"
+    await channel.send(message)
 
 # Used to clone a message by id
 # !clid id <#channel>
