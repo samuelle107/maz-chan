@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 
 
-def insert(con: object, table_name: str, columns: list, values: list) -> bool:
+def insert(con: object, table_name: str, columns: list, values: list) -> integer:
     cur = con.cursor()
     
     try:
@@ -19,7 +19,7 @@ def insert(con: object, table_name: str, columns: list, values: list) -> bool:
         return -1
     
 
-def remove(con: object, table_name: str, column: str, value: any) -> bool:
+def remove(con: object, table_name: str, column: str, value: any) -> integer:
     cur = con.cursor()
 
     try:
@@ -34,7 +34,7 @@ def remove(con: object, table_name: str, column: str, value: any) -> bool:
         return 0
 
 
-def get(con: object, table_name: str, column: str, value: any) -> object:
+def get(con: object, table_name: str, column: str, value: any) -> list:
     cur = con.cursor()
 
     try:
