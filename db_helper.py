@@ -14,7 +14,6 @@ def insert(con: object, table_name: str, columns: list, values: list) -> bool:
         cur.close()
 
         return cur.lastrowid
-        
     except Exception as e:
         cur.close()
         return -1
