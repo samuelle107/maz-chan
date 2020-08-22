@@ -81,11 +81,11 @@ def get_all_conditional(con: object, table_name: str, columns: list, values: lis
         return []
 
 
-def does_exist(con: object, table_name: str, column: str, value: str) -> bool:
+def does_exist(con: object, table_name: str, columns: list, values: list) -> bool:
     cur = con.cursor()
 
     try:
-        query = f"SELECT exists(SELECT * FROM {table_name} where {column} = {json.dumps(value)})"
+        query = f"SELECT exists(SELECT * FROM {table_name} where ({','.join(columns)}) in (({str(values).strip('[]')})))"
         cur.execute(query)
         does_exist = bool(cur.fetchone()[0])
         cur.close()
