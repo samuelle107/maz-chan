@@ -74,14 +74,14 @@ async def on_ready():
                 insert(con, "mechmarket_posts", ["post_id", "title"], [submission.id, submission.title[:100]])
 
                 matching_keywords = list(filter(lambda keyword: keyword in submission.title, keywords))
+                matching_users = []
 
                 for matching_keyword in matching_keywords:
                     users = query_users_by_keywords(matching_keyword)
                     for uid in users:
-                        user = client.get_user(uid)
-                        await mechmarket_channel.send(f"Someone of your interest has been found, {user.mention}!")
+                        matching_users.append(client.get_user(uid))
 
-                await mechmarket_channel.send(f'```{submission.title}``` \n{submission.url}\n\n')
+                await mechmarket_channel.send(f'```{submission.title}```\n {user.mention for user in matching_users} \n\n{submission.url}\n\n')
 
         logging.info(f'{str(datetime.datetime.now())}: Finished scraping')
         con.close()
