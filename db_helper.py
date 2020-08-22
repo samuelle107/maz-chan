@@ -17,20 +17,23 @@ def insert(con: object, table_name: str, columns: list, values: list) -> bool:
         
     except Exception as e:
         cur.close()
+        print(e)
         return -1
     
 
-def remove(con: object, table_name: str, column: str, value: any) -> bool:
+def remove(con: object, table_name: str, columns: list, values: list) -> bool:
     cur = con.cursor()
 
     try:
-        query = f"DELETE FROM {table_name} where {column} = {json.dumps(value)}"
+        query = f"DELETE FROM {table_name} where ({','.join(columns)}) in (({str(values).strip('[]')}))"
+        print(query)
         cur.execute(query)
         con.commit()
         cur.close()
 
         return cur.rowcount
     except Exception as e:
+        print(e)
         cur.close()
         return 0
 
@@ -40,7 +43,20 @@ def get(con: object, table_name: str, column: str, value: any) -> object:
 
     try:
         query = f"SELECT * FROM {table_name} where {column} = {json.dumps(value)}"
-        print(query)
+        cur.execute(query)
+        result = cur.fetchall()
+        cur.close()
+
+        return result
+    except Exception as e:
+        cur.close()
+        return []
+
+def get_all(con: object, table_name: str) -> list:
+    cur = con.cursor()
+    
+    try:
+        query = f"SELECT * FROM {table_name}"
         cur.execute(query)
         result = cur.fetchall()
         cur.close()
@@ -51,11 +67,11 @@ def get(con: object, table_name: str, column: str, value: any) -> object:
         return []
 
 
-def get_all(con: object, table_name: str) -> list:
+def get_all_conditional(con: object, table_name: str, columns: list, values: list) -> list:
     cur = con.cursor()
     
     try:
-        query = f"SELECT * FROM {table_name}"
+        query = f"SELECT * FROM {table_name} where ({','.join(columns)}) in (({str(values).strip('[]')}))"
         cur.execute(query)
         result = cur.fetchall()
         cur.close()

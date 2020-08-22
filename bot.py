@@ -1,9 +1,16 @@
+import asyncio
+# import create_command
 import datetime
 import discord
 import os
+import logging
+import mysql.connector
 from discord.ext import commands
 from dotenv import load_dotenv
-import create_command
+from subreddit_scrapper import get_scraped_submissions
+from db_helper import get_all, get_all_conditional, insert, remove, does_exist
+
+logging.getLogger().setLevel(logging.INFO)
 
 load_dotenv()
 
@@ -18,14 +25,67 @@ BOT_COMMANDS_CHANNEL_ID = 744057858886336552
 BOT_TESTING_CHANNEL_ID = 744065526023847957
 GENERAL_CHAT_CHANNEL_ID = 744030856196390994
 RULES_CHANNEL_ID = 744047107866099813
+MECH_MARKET_CHANNEL_ID = 746622430927257721
 
 client = commands.Bot(command_prefix='!')
 
+con_info = dict(
+    user=os.getenv("MYSQL_USERNAME"),
+    password=os.getenv("MYSQL_PASSWORD"),
+    host=os.getenv("MYSQL_HOST"),
+    database=os.getenv("MYSQL_DB"),
+    charset="utf8",
+    use_unicode=True
+)
+
+def query_keywords() -> list:
+    con = mysql.connector.connect(**con_info)
+    results = get_all(con, "keywords")
+    con.close()
+    return list(result[0] for result in results)
+
+def query_users_by_keywords(keyword: str) -> list:
+    con = mysql.connector.connect(**con_info)
+    results = get_all_conditional(con, "keywords_users", ["keyword_id"], [keyword])
+    con.close()
+    return list(result[1] for result in results)
 
 @client.event
 async def on_ready():
-    channel = client.get_channel(BOT_TESTING_CHANNEL_ID)
-    await channel.send("MAZ Chan is ready!")
+    bot_testing_channel = client.get_channel(BOT_TESTING_CHANNEL_ID)
+    mechmarket_channel = client.get_channel(MECH_MARKET_CHANNEL_ID)
+
+    logging.info(f'{str(datetime.datetime.now())}: Bot is ready')
+    await bot_testing_channel.send("MAZ Chan is ready!")
+
+    while True:
+        con = mysql.connector.connect(**con_info)
+
+        keywords = query_keywords()
+
+        logging.info(f'{str(datetime.datetime.now())}: Checking for new submissions: ')
+        submissions = get_scraped_submissions("MechMarket")
+
+        for submission in submissions:
+            post_does_exist = does_exist(con, "mechmarket_posts", "post_id", submission.id)
+
+            if not post_does_exist:
+                logging.info(f'{str(datetime.datetime.now())}: Found new submission: {submission.title[:100]}')
+                insert(con, "mechmarket_posts", ["post_id", "title"], [submission.id, submission.title[:100]])
+
+                matching_keywords = list(filter(lambda keyword: keyword in submission.title, keywords))
+
+                for matching_keyword in matching_keywords:
+                    users = query_users_by_keywords(matching_keyword)
+                    for uid in users:
+                        user = client.get_user(uid)
+                        await mechmarket_channel.send(f"Someone of your interest has been found, {user.mention}!")
+
+                await mechmarket_channel.send(f'```{submission.title}``` \n{submission.url}\n\n')
+
+        logging.info(f'{str(datetime.datetime.now())}: Finished scraping')
+        con.close()
+        await asyncio.sleep(60)
 
 
 # Called when a new member joins
@@ -109,6 +169,43 @@ async def gugl(ctx, *args):
     query = f"q={'+'.join(args)}"
     await ctx.send(base_url + query)
 
+@client.command()
+async def add_keyword(ctx, *arg):
+    keyword = " ".join(arg)
+
+    con = mysql.connector.connect(**con_info)
+    insert(con, "keywords", ["keyword_id"], [keyword])
+    insert(con, "users", ["user_id"], [ctx.message.author.id])
+    keywords_users_id = insert(con, "keywords_users", ["user_id", "keyword_id"], [ctx.message.author.id, keyword])
+    con.close()
+
+    if keywords_users_id != -1:
+        await ctx.send(f"Successfully added: {keyword}")
+    else:
+        await ctx.send(f"Failled to add: {keyword}")
+
+
+@client.command()
+async def remove_keyword(ctx, *arg):
+    keyword = " ".join(arg)
+
+    con = mysql.connector.connect(**con_info)
+    num_removed = remove(con, "keywords_users", ["user_id", "keyword_id"], [ctx.message.author.id, keyword])
+    con.close()
+
+    if num_removed != 0:
+        await ctx.send(f"Sucessfully deleted: {keyword}")
+    else:
+        await ctx.send(f"Failed to delete: {keyword}")
+
+@client.command()
+async def get_keywords(ctx):
+    con = mysql.connector.connect(**con_info)
+    results = get_all_conditional(con, "keywords_users", ['user_id'], [ctx.message.author.id])
+
+    await ctx.send(f"Your keywords are: {', '.join(list(result[2] for result in results))}")
+    con.close()
+
 
 # create a new custom command
 @client.command()
@@ -155,3 +252,5 @@ async def rcc(ctx, *args):
         await ctx.send(f"No such command `{command_name}`")
 
 client.run(DISCORD_BOT_TOKEN)
+
+# print(query_users_by_keywords("9009"))
