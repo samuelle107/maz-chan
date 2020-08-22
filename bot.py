@@ -73,7 +73,7 @@ async def on_ready():
                 logging.info(f'{str(datetime.datetime.now())}: Found new submission: {submission.title[:100]}')
                 insert(con, "mechmarket_posts", ["post_id", "title"], [submission.id, submission.title[:100]])
 
-                matching_keywords = list(filter(lambda keyword: keyword in submission.title, keywords))
+                matching_keywords = list(filter(lambda keyword: keyword.lower() in submission.title.lower(), keywords))
                 mentions = []
 
                 for matching_keyword in matching_keywords:
