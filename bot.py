@@ -265,7 +265,7 @@ async def get_forbidden_words(ctx):
     con = mysql.connector.connect(**con_info)
     results = get_all_conditional(con, "forbidden_words_users", ['user_id'], [ctx.message.author.id])
     con.close()
-    await ctx.send(f"Your keywords are: {', '.join(list(result[1] for result in results))}")
+    await ctx.send(f"Your forbidden words are: {', '.join(list(result[1] for result in results))}")
 
 # # create a new custom command
 # @client.command()
