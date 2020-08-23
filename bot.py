@@ -219,11 +219,11 @@ async def add_keyword(ctx, *arg):
         keywords_users_id = insert(con, "keywords_users", ["user_id", "keyword_id"], [ctx.message.author.id, keyword])
 
         if keywords_users_id != -1:
-            await ctx.send(f"Hewwo! I added {keyword} to your Keywords!")
+            await ctx.send(f"Hewwo! I added **{keyword}** to your Keywords!")
         else:
-            await ctx.send(f"Oh nyo! I couldn't add {keyword} to your Keywords.")
+            await ctx.send(f"Oh nyo! I couldn't add **{keyword}** to your Keywords.")
     else:
-        await ctx.send(f"Baka! {keyword} is already in your Keywords.")
+        await ctx.send(f"Baka! **{keyword}** is already in your Keywords.")
 
     con.close()
 
@@ -237,9 +237,9 @@ async def remove_keyword(ctx, *arg):
     con.close()
 
     if num_removed != 0:
-        await ctx.send(f"Done! I removed {keyword} from your Keywords.")
+        await ctx.send(f"Done! I removed **{keyword}** from your Keywords.")
     else:
-        await ctx.send(f"Oh Nyo! I couldn't find {keyword}....")
+        await ctx.send(f"Oh Nyo! I couldn't find **{keyword}**....")
 
 
 @client.command(aliases=["gk"])
@@ -248,7 +248,7 @@ async def get_keywords(ctx):
     results = get_all_conditional(con, "keywords_users", ['user_id'], [ctx.message.author.id])
     con.close()
 
-    await ctx.send(f"Hewwo! Your keywords are {', '.join(list(result[2] for result in results))}.")
+    await ctx.send(f"Hewwo! Your keywords are **{', '.join(list(result[2] for result in results))}**.")
 
 
 @client.command(aliases=["afw"])
@@ -264,11 +264,11 @@ async def add_forbidden_word(ctx, *arg):
         forbidden_words_users_id = insert(con, "forbidden_words_users", ["forbidden_word_id", "user_id"], [forbidden_word, ctx.message.author.id])
 
         if forbidden_words_users_id != -1:
-            await ctx.send(f"Hewwo! I added {forbidden_word} to your Forbidden Words!")
+            await ctx.send(f"Hewwo! I added **{forbidden_word}** to your Forbidden Words!")
         else:
-            await ctx.send(f"Oh nyo! I couldn't add {forbidden_word} to your Forbidden Words")
+            await ctx.send(f"Oh nyo! I couldn't add **{forbidden_word}** to your Forbidden Words")
     else:
-        await ctx.send(f"Baka! {forbidden_word} is already in your Forbidden Words!")
+        await ctx.send(f"Baka! **{forbidden_word}** is already in your Forbidden Words!")
 
     con.close()
 
@@ -282,9 +282,9 @@ async def remove_forbidden_word(ctx, *arg):
     con.close()
 
     if num_removed != 0:
-        await ctx.send(f"Done! I removed {forbidden_word} from your Forbidden Words.")
+        await ctx.send(f"Done! I removed **{forbidden_word}** from your Forbidden Words.")
     else:
-        await ctx.send(f"Oh Nyo! I couldn't find {forbidden_word}....")
+        await ctx.send(f"Oh Nyo! I couldn't find **{forbidden_word}**....")
 
 
 @client.command(aliases=["gfw"])
@@ -293,7 +293,7 @@ async def get_forbidden_words(ctx):
     results = get_all_conditional(con, "forbidden_words_users", ['user_id'], [ctx.message.author.id])
     con.close()
 
-    await ctx.send(f"Hewwo! Your keywords are {', '.join(list(result[1] for result in results))}.")
+    await ctx.send(f"Hewwo! Your keywords are **{', '.join(list(result[1] for result in results))}**.")
 
 # # create a new custom command
 # @client.command()
