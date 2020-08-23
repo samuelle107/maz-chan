@@ -199,12 +199,21 @@ async def gugl(ctx, *args):
     query = f"q={'+'.join(args)}"
     await ctx.send(base_url + query)
 
+
 @client.command()
 async def baka(ctx):
     message = "B-b-baka! You just don't know when to stop. Hmph!"
     await ctx.send(message)
     await ctx.send("https://www.seekpng.com/png/detail/928-9281261_png-baka-anime-emojis-for-discord.png")
+                                                  
 
+@client.command()
+async def puppet(ctx, *arg):
+    target_channel_id = int("".join([(s) for s in args[0] if s.isdigit()]))
+    channel = client.get_channel(target_channel_id)
+    message = " ".join(arg[1:])
+    await channel.send(message)                                              
+                                                  
 
 @client.command(aliases=["ak"])
 async def add_keyword(ctx, *arg):
