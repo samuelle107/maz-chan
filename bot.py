@@ -67,7 +67,7 @@ async def on_ready():
     mechmarket_channel = client.get_channel(MECH_MARKET_CHANNEL_ID)
     keeb_updates_channel = client.get_channel(KEEB_UPDATES_CHANNEL_ID)
 
-    subreddits = "MechMarket"
+    subreddits = ["MechMarket", "MechGroupBuys", "MechanicalKeyboards"]
     announcement_keywords = ["[gb]", "[ic]", "[IN STOCK]", "[PRE-ORDER]", "Novelkeys Updates"]
 
     logging.info(f'{str(datetime.datetime.now())}: Bot is ready')
@@ -79,8 +79,7 @@ async def on_ready():
         keywords = query_keywords()
 
         logging.info(f'{str(datetime.datetime.now())}: Checking for new submissions: ')
-        submissions = get_scraped_submissions(subreddits)
-
+        submissions = get_scraped_submissions("+".join(subreddits))
 
         for submission in submissions:
             post_does_exist = does_exist(con, "mechmarket_posts", ["post_id"], [submission.id])
@@ -92,20 +91,20 @@ async def on_ready():
                 if any(announcement_keyword.lower() in submission.title.lower() for announcement_keyword in announcement_keywords):
                     await keeb_updates_channel.send(f'```{submission.title}```\n \n{submission.url}')
 
-                matching_keywords = list(filter(lambda keyword: keyword.lower() in submission.title.lower(), keywords))
-                mentions = set()
+                if submission.subreddit == "MechMarket":
+                    matching_keywords = list(filter(lambda keyword: keyword.lower() in submission.title.lower(), keywords))
+                    mentions = set()
 
-                for matching_keyword in matching_keywords:
-                    users = query_users_by_keywords(matching_keyword)
+                    for matching_keyword in matching_keywords:
+                        users = query_users_by_keywords(matching_keyword)
 
-                    for uid in users:
-                        forbidden_words = query_forbidden_words_by_user_id(uid)
+                        for uid in users:
+                            forbidden_words = query_forbidden_words_by_user_id(uid)
 
-                        # If the title does not contain any of the user's forbidden words, mention
-                        if not any(forbidden_word.lower() in submission.title.lower() for forbidden_word in forbidden_words):
-                            mentions.add(client.get_user(uid).mention)
+                            if not any(forbidden_word.lower() in submission.title.lower() for forbidden_word in forbidden_words):
+                                mentions.add(client.get_user(uid).mention)
 
-                await mechmarket_channel.send(f'```{submission.title}```\n {", ".join(list(set(mentions)))} \n\n{submission.url}\n\n')
+                    await mechmarket_channel.send(f'```{submission.title}```\n {", ".join(list(set(mentions)))} \n\n{submission.url}\n\n')
 
         logging.info(f'{str(datetime.datetime.now())}: Finished scraping')
         con.close()
@@ -320,4 +319,6 @@ async def get_forbidden_words(ctx):
 #     else:
 #         await ctx.send(f"No such command `{command_name}`")
 
-client.run(DISCORD_BOT_TOKEN)
+# client.run(DISCORD_BOT_TOKEN)
+
+
