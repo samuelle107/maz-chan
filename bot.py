@@ -27,8 +27,7 @@ GENERAL_CHAT_CHANNEL_ID = 744030856196390994
 RULES_CHANNEL_ID = 744047107866099813
 MECH_MARKET_CHANNEL_ID = 746622430927257721
 KEEB_UPDATES_CHANNEL_ID = 744044577165672449
-
-client = commands.Bot(command_prefix='!')
+ARTISAN_UPDATES_CHANNEL_ID = 746525189738725406
 
 con_info = dict(
     user=os.getenv("MYSQL_USERNAME"),
@@ -38,6 +37,8 @@ con_info = dict(
     charset="utf8",
     use_unicode=True
 )
+
+client = commands.Bot(command_prefix='!')
 
 
 def query_keywords() -> list:
@@ -66,6 +67,7 @@ async def on_ready():
     bot_testing_channel = client.get_channel(BOT_TESTING_CHANNEL_ID)
     mechmarket_channel = client.get_channel(MECH_MARKET_CHANNEL_ID)
     keeb_updates_channel = client.get_channel(KEEB_UPDATES_CHANNEL_ID)
+    artisans_update_channel = client.get_channel(ARTISAN_UPDATES_CHANNEL_ID)
 
     subreddits = ["MechMarket", "MechGroupBuys", "MechanicalKeyboards"]
     announcement_keywords = ["[gb]", "[ic]", "[IN STOCK]", "[PRE-ORDER]", "Novelkeys Updates"]
@@ -90,6 +92,9 @@ async def on_ready():
 
                 if any(announcement_keyword.lower() in submission.title.lower() for announcement_keyword in announcement_keywords):
                     await keeb_updates_channel.send(f'```{submission.title}```\n \n{submission.url}')
+                
+                if "[Artisan]" in submission.title:
+                    await artisans_update_channel.send(f'```{submission.title}```\n \n{submission.url}')
 
                 if submission.subreddit == "MechMarket":
                     matching_keywords = list(filter(lambda keyword: keyword.lower() in submission.title.lower(), keywords))
