@@ -79,7 +79,7 @@ async def on_ready():
         keywords = query_keywords()
 
         logging.info(f'{str(datetime.datetime.now())}: Checking for new submissions: ')
-        submissions = get_scraped_submissions("MechMarket")
+        submissions = get_scraped_submissions(subreddits)
 
 
         for submission in submissions:
