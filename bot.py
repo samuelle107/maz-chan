@@ -199,6 +199,12 @@ async def gugl(ctx, *args):
     query = f"q={'+'.join(args)}"
     await ctx.send(base_url + query)
 
+@client.command()
+async def baka(ctx):
+    message = "B-b-baka! You just don't know when to stop. Hmph!"
+    await ctx.send(message)
+    await ctx.send("https://www.seekpng.com/png/detail/928-9281261_png-baka-anime-emojis-for-discord.png")
+
 
 @client.command(aliases=["ak"])
 async def add_keyword(ctx, *arg):
