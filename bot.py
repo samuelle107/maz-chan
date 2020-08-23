@@ -237,7 +237,7 @@ async def remove_keyword(ctx, *arg):
     con.close()
 
     if num_removed != 0:
-        await ctx.send(f"Done! I removed {keyword} from your Keywods.")
+        await ctx.send(f"Done! I removed {keyword} from your Keywords.")
     else:
         await ctx.send(f"Oh Nyo! I couldn't find {keyword}....")
 
