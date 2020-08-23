@@ -319,6 +319,6 @@ async def get_forbidden_words(ctx):
 #     else:
 #         await ctx.send(f"No such command `{command_name}`")
 
-# client.run(DISCORD_BOT_TOKEN)
+client.run(DISCORD_BOT_TOKEN)
 
 
