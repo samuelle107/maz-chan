@@ -208,10 +208,10 @@ async def baka(ctx):
                                                   
 
 @client.command()
-async def puppet(ctx, *arg):
+async def puppet(ctx, *args):
     target_channel_id = int("".join([(s) for s in args[0] if s.isdigit()]))
     channel = client.get_channel(target_channel_id)
-    message = " ".join(arg[1:])
+    message = " ".join(args[1:])
     await channel.send(message)                                              
                                                   
 
