@@ -81,7 +81,7 @@ async def on_ready():
 
             if not post_does_exist:
                 logging.info(f'{str(datetime.datetime.now())}: Found new submission: {submission.title[:20]}')
-                insert(con, "mechmarket_posts", ["post_id", "title"], [submission.id, submission.title[:20]])
+                insert(con, "mechmarket_posts", ["post_id", "title"], [submission.id, submission.title[:100]])
 
                 matching_keywords = list(filter(lambda keyword: keyword.lower() in submission.title.lower(), keywords))
                 mentions = set()
