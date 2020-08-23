@@ -91,10 +91,10 @@ async def on_ready():
                 insert(con, "mechmarket_posts", ["post_id", "title"], [submission.id, submission.title[:100]])
 
                 if any(announcement_keyword.lower() in submission.title.lower() for announcement_keyword in announcement_keywords):
-                    await keeb_updates_channel.send(f'```{submission.title}```\n \n{submission.url}')
+                    await keeb_updates_channel.send(f'```{submission.title}```\n \nhttps://redd.it/{submission.id}')
                 
                 if "[Artisan]" in submission.title:
-                    await artisans_update_channel.send(f'```{submission.title}```\n \n{submission.url}')
+                    await artisans_update_channel.send(f'```{submission.title}```\n \nhttps://redd.it/{submission.id}')
 
                 if submission.subreddit == "MechMarket":
                     matching_keywords = list(filter(lambda keyword: keyword.lower() in submission.title.lower(), keywords))
@@ -109,7 +109,7 @@ async def on_ready():
                             if not any(forbidden_word.lower() in submission.title.lower() for forbidden_word in forbidden_words):
                                 mentions.add(client.get_user(uid).mention)
 
-                    await mechmarket_channel.send(f'```{submission.title}```\n {", ".join(list(set(mentions)))} \n\n{submission.url}\n\n')
+                    await mechmarket_channel.send(f'```{submission.title}```\n {", ".join(list(set(mentions)))} \n\nhttps://redd.it/{submission.id}')
 
         logging.info(f'{str(datetime.datetime.now())}: Finished scraping')
         con.close()
