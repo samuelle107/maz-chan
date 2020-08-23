@@ -73,7 +73,7 @@ async def on_ready():
     announcement_keywords = ["[gb]", "[ic]", "[IN STOCK]", "[PRE-ORDER]", "Novelkeys Updates"]
 
     logging.info(f'{str(datetime.datetime.now())}: Bot is ready')
-    await bot_testing_channel.send("MAZ Chan is ready!")
+    await bot_testing_channel.send("MAZ Chan is ready! uWu")
 
     while True:
         con = mysql.connector.connect(**con_info)
@@ -131,7 +131,7 @@ async def on_member_join(member):
     await member.add_roles(role)
     await channel.send(url)
     await channel.send(
-        f'Irasshaimase, {member.mention} \n\nRead the rules at <#{RULES_CHANNEL_ID}>'
+        f'Irasshaimase, {member.mention}!\n\Pwease read the rules at <#{RULES_CHANNEL_ID}>'
     )
 
 
@@ -173,9 +173,10 @@ async def cl(ctx, *args):
 
     channel = client.get_channel(target_channel_id)
     messages = await ctx.history(limit=messages_ago).flatten()
-    message = f"{messages[-1].author.mention} said: {messages[-1].attachments[0].url if len(messages[-1].attachments) > 0 else messages[-1].content}"
 
-    await channel.send(message)
+    await channel.send(f"{messages[-1].author.mention} said: {messages[-1].content}")
+    for attachment in messages[-1].attachments:
+        await channel.send(attachment.url)
 
 
 # Used to clone a message by id
@@ -187,8 +188,9 @@ async def clid(ctx, *args):
     channel = client.get_channel(target_channel_id)
     message_data = await ctx.channel.fetch_message(id)
 
-    message = f"{message_data.author.mention} said: {message_data.attachments[0].url if len(message_data.attachments) > 0 else message_data.content}"
-    await channel.send(message)
+    await channel.send(f"{message_data.author.mention} said: {message_data.content}")
+    for attachment in message_data.attachments:
+        await channel.send(attachment.url)
 
 
 @client.command()
@@ -206,14 +208,17 @@ async def add_keyword(ctx, *arg):
     insert(con, "keywords", ["keyword_id"], [keyword])
     insert(con, "users", ["user_id"], [ctx.message.author.id])
     existance = does_exist(con, "keywords_users", ["user_id", "keyword_id"], [ctx.message.author.id, keyword])
+
     if not existance:
         keywords_users_id = insert(con, "keywords_users", ["user_id", "keyword_id"], [ctx.message.author.id, keyword])
+
         if keywords_users_id != -1:
-            await ctx.send(f"Successfully added: {keyword}")
+            await ctx.send(f"Hewwo! I added {keyword} to your Keywords!")
         else:
-            await ctx.send(f"Failled to add: {keyword}")
+            await ctx.send(f"Oh nyo! I couldn't add {keyword} to your Keywords.")
     else:
-        await ctx.send(f"{keyword} is already being tracked")
+        await ctx.send(f"Baka! {keyword} is already in your Keywords.")
+
     con.close()
 
 
@@ -226,9 +231,9 @@ async def remove_keyword(ctx, *arg):
     con.close()
 
     if num_removed != 0:
-        await ctx.send(f"Sucessfully deleted: {keyword}")
+        await ctx.send(f"Done! I removed {keyword} from your Keywods.")
     else:
-        await ctx.send(f"Failed to delete: {keyword}")
+        await ctx.send(f"Oh Nyo! I couldn't find {keyword}....")
 
 
 @client.command(aliases=["gk"])
@@ -237,7 +242,7 @@ async def get_keywords(ctx):
     results = get_all_conditional(con, "keywords_users", ['user_id'], [ctx.message.author.id])
     con.close()
 
-    await ctx.send(f"Your keywords are: {', '.join(list(result[2] for result in results))}")
+    await ctx.send(f"Hewwo! Your keywords are {', '.join(list(result[2] for result in results))}.")
 
 
 @client.command(aliases=["afw"])
@@ -248,14 +253,17 @@ async def add_forbidden_word(ctx, *arg):
     insert(con, "forbidden_words", ["forbidden_word_id"], [forbidden_word])
     insert(con, "users", ["user_id"], [ctx.message.author.id])
     existance = does_exist(con, "forbidden_words_users", ["forbidden_word_id", "user_id"], [forbidden_word, ctx.message.author.id])
+
     if not existance:
         forbidden_words_users_id = insert(con, "forbidden_words_users", ["forbidden_word_id", "user_id"], [forbidden_word, ctx.message.author.id])
+
         if forbidden_words_users_id != -1:
-            await ctx.send(f"Successfully added: {forbidden_word}")
+            await ctx.send(f"Hewwo! I added {forbidden_word} to your Forbidden Words!")
         else:
-            await ctx.send(f"Failled to add: {forbidden_word}")
+            await ctx.send(f"Oh nyo! I couldn't add {forbidden_word} to your Forbidden Words")
     else:
-        await ctx.send(f"{forbidden_word} is already being tracked")
+        await ctx.send(f"Baka! {forbidden_word} is already in your Forbidden Words!")
+
     con.close()
 
 
@@ -268,9 +276,9 @@ async def remove_forbidden_word(ctx, *arg):
     con.close()
 
     if num_removed != 0:
-        await ctx.send(f"Sucessfully deleted: {forbidden_word}")
+        await ctx.send(f"Done! I removed {forbidden_word} from your Forbidden Words.")
     else:
-        await ctx.send(f"Failed to delete: {forbidden_word}")
+        await ctx.send(f"Oh Nyo! I couldn't find {forbidden_word}....")
 
 
 @client.command(aliases=["gfw"])
@@ -278,7 +286,8 @@ async def get_forbidden_words(ctx):
     con = mysql.connector.connect(**con_info)
     results = get_all_conditional(con, "forbidden_words_users", ['user_id'], [ctx.message.author.id])
     con.close()
-    await ctx.send(f"Your forbidden words are: {', '.join(list(result[1] for result in results))}")
+
+    await ctx.send(f"Hewwo! Your keywords are {', '.join(list(result[1] for result in results))}.")
 
 # # create a new custom command
 # @client.command()
@@ -325,5 +334,3 @@ async def get_forbidden_words(ctx):
 #         await ctx.send(f"No such command `{command_name}`")
 
 client.run(DISCORD_BOT_TOKEN)
-
-
