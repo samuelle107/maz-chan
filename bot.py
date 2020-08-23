@@ -26,6 +26,7 @@ BOT_TESTING_CHANNEL_ID = 744065526023847957
 GENERAL_CHAT_CHANNEL_ID = 744030856196390994
 RULES_CHANNEL_ID = 744047107866099813
 MECH_MARKET_CHANNEL_ID = 746622430927257721
+KEEB_UPDATES_CHANNEL_ID = 744044577165672449
 
 client = commands.Bot(command_prefix='!')
 
@@ -64,6 +65,10 @@ def query_forbidden_words_by_user_id(user_id: int) -> list:
 async def on_ready():
     bot_testing_channel = client.get_channel(BOT_TESTING_CHANNEL_ID)
     mechmarket_channel = client.get_channel(MECH_MARKET_CHANNEL_ID)
+    keeb_updates_channel = client.get_channel(KEEB_UPDATES_CHANNEL_ID)
+
+    subreddits = "MechMarket+MechGroupBuys+MechanicalKeyboards"
+    announcement_keywords = ["[gb]", "[ic]", "[IN STOCK]", "[PRE-ORDER]", "Novelkeys Updates"]
 
     logging.info(f'{str(datetime.datetime.now())}: Bot is ready')
     await bot_testing_channel.send("MAZ Chan is ready!")
@@ -76,12 +81,16 @@ async def on_ready():
         logging.info(f'{str(datetime.datetime.now())}: Checking for new submissions: ')
         submissions = get_scraped_submissions("MechMarket")
 
+
         for submission in submissions:
             post_does_exist = does_exist(con, "mechmarket_posts", ["post_id"], [submission.id])
 
             if not post_does_exist:
                 logging.info(f'{str(datetime.datetime.now())}: Found new submission: {submission.title[:20]}')
                 insert(con, "mechmarket_posts", ["post_id", "title"], [submission.id, submission.title[:100]])
+
+                if any(announcement_keyword.lower() in submission.title.lower() for announcement_keyword in announcement_keywords):
+                    await keeb_updates_channel.send(f'```{submission.title}```\n \n{submission.url}')
 
                 matching_keywords = list(filter(lambda keyword: keyword.lower() in submission.title.lower(), keywords))
                 mentions = set()
