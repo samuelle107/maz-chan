@@ -67,7 +67,7 @@ async def on_ready():
     mechmarket_channel = client.get_channel(MECH_MARKET_CHANNEL_ID)
     keeb_updates_channel = client.get_channel(KEEB_UPDATES_CHANNEL_ID)
 
-    subreddits = "MechMarket+MechGroupBuys+MechanicalKeyboards"
+    subreddits = "MechMarket"
     announcement_keywords = ["[gb]", "[ic]", "[IN STOCK]", "[PRE-ORDER]", "Novelkeys Updates"]
 
     logging.info(f'{str(datetime.datetime.now())}: Bot is ready')
