@@ -68,7 +68,7 @@ def get_url_at(index: int, text: str) -> str:
         return urls[index]
     except Exception as e:
         print(e)
-        return ""
+        return "Oh nyo! This person didn't include timestamps! >_<"
 
 
 @client.event
