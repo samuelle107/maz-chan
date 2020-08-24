@@ -123,7 +123,9 @@ async def on_ready():
                     embed.url = f"https://redd.it/{submission.id}"
                     image_url = get_url_at(0, submission.selftext_html)
 
-                    await mechmarket_channel.send(f'{", ".join(list(set(mentions)))}')
+                    
+                    if mentions:
+                        await mechmarket_channel.send(f'{", ".join(list(set(mentions)))}')
                     await mechmarket_channel.send(embed=embed)
                     await mechmarket_channel.send(image_url)
 
