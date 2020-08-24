@@ -5,6 +5,7 @@ import discord
 import os
 import logging
 import mysql.connector
+import re
 from discord.ext import commands
 from dotenv import load_dotenv
 from subreddit_scrapper import get_scraped_submissions
@@ -61,6 +62,14 @@ def query_forbidden_words_by_user_id(user_id: int) -> list:
     con.close()
     return list(result[1] for result in results)
 
+def get_url_at(index: int, text: str) -> str:
+    try:
+        urls = re.findall('https?://[^\s<>"]+|www\.[^\s<>"]+', text)
+        return urls[index]
+    except Exception as e:
+        print(e)
+        return ""
+
 
 @client.event
 async def on_ready():
@@ -108,8 +117,15 @@ async def on_ready():
 
                             if not any(forbidden_word.lower() in submission.title.lower() for forbidden_word in forbidden_words):
                                 mentions.add(client.get_user(uid).mention)
+                    
+                    embed = discord.Embed()
+                    embed.title = submission.title
+                    embed.url = f"https://redd.it/{submission.id}"
+                    image_url = get_url_at(0, submission.selftext_html)
 
-                    await mechmarket_channel.send(f'{", ".join(list(set(mentions)))}\n```{submission.title}```\nhttps://redd.it/{submission.id}\n')
+                    await mechmarket_channel.send(f'{", ".join(list(set(mentions)))}')
+                    await mechmarket_channel.send(embed=embed)
+                    await mechmarket_channel.send(image_url)
 
         logging.info(f'{str(datetime.datetime.now())}: Finished scraping')
         con.close()
