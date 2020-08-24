@@ -68,7 +68,7 @@ def get_url_at(index: int, text: str) -> str:
         return urls[index]
     except Exception as e:
         print(e)
-        return "Oh nyo! This person didn't include timestamps! >_<"
+        return ""
 
 
 @client.event
@@ -127,7 +127,8 @@ async def on_ready():
                     if mentions:
                         await mechmarket_channel.send(f'{", ".join(list(set(mentions)))}')
                     await mechmarket_channel.send(embed=embed)
-                    await mechmarket_channel.send(image_url)
+                    if image_url:
+                        await mechmarket_channel.send(image_url)
 
         logging.info(f'{str(datetime.datetime.now())}: Finished scraping')
         con.close()
