@@ -109,7 +109,7 @@ async def on_ready():
                             if not any(forbidden_word.lower() in submission.title.lower() for forbidden_word in forbidden_words):
                                 mentions.add(client.get_user(uid).mention)
 
-                    await mechmarket_channel.send(f'{", ".join(list(set(mentions)))}\n```{submission.title}```\nhttps://redd.it/{submission.id}')
+                    await mechmarket_channel.send(f'{", ".join(list(set(mentions)))}\n```{submission.title}```\nhttps://redd.it/{submission.id}\n')
 
         logging.info(f'{str(datetime.datetime.now())}: Finished scraping')
         con.close()
