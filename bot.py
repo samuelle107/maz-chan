@@ -122,15 +122,12 @@ async def on_ready():
                     embed.title = submission.title
                     embed.url = f"https://redd.it/{submission.id}"
                     image_url = get_url_at(0, submission.selftext_html)
-                    if image_url:
-                        embed.set_image(url=image_url)
 
-                    
                     if mentions:
                         await mechmarket_channel.send(f'{", ".join(list(set(mentions)))}')
                     await mechmarket_channel.send(embed=embed)
-                    # if image_url:
-                        # await mechmarket_channel.send(image_url)
+                    if image_url:
+                        await mechmarket_channel.send(image_url)
 
         logging.info(f'{str(datetime.datetime.now())}: Finished scraping')
         con.close()
