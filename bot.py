@@ -123,7 +123,7 @@ async def on_ready():
                     embed.url = f"https://redd.it/{submission.id}"
                     image_url = get_url_at(0, submission.selftext_html)
                     if image_url:
-                        embed.image = image_url
+                        embed.set_image = image_url
 
                     
                     if mentions:
