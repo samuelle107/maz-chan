@@ -178,13 +178,14 @@ async def egghead(ctx):
 @client.command()
 async def warn(ctx, member: discord.Member, *arg):
     user_roles = map(lambda x: x.name, ctx.author.roles)
-    authorized_roles = ["Head Mod", "Refugee"]
+    authorized_roles = ["Head Mod", "pp", "bambi", "Special Forces", "GOD"]
 
     if any(role in authorized_roles for role in user_roles):
         embed = discord.Embed(colour=0xFF0000)
         embed.description = f'**{member}** {" ".join(arg)}'
         await ctx.send(f'Oh nyo! {member.mention} has been warned.')
         await ctx.send(embed=embed)
+        await ctx.send("https://imgur.com/a/8XDd1GA")
     else:
         await ctx.send("Oh nyo! It doesn't seem like you have permission!( っ- ‸ – ς)")
 
