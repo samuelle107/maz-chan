@@ -187,7 +187,7 @@ async def warn(ctx, member: discord.Member, *arg):
         await ctx.send(embed=embed)
         await ctx.send("https://imgur.com/a/8XDd1GA")
     else:
-        await ctx.send("Oh nyo! It doesn't seem like you have permission!( っ- ‸ – ς)")
+        await ctx.send("Oh nyo! It doesn't seem like you have permission! ( っ- ‸ – ς)")
 
 
 # Used to paste copy pasta
