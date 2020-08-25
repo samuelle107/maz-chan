@@ -175,6 +175,14 @@ async def egghead(ctx):
     )
 
 
+@client.command()
+async def warn(ctx, member: discord.Member, *arg):
+    embed = discord.Embed(colour=0xFF0000)
+    embed.description = f'**{member}** {" ".join(arg)}'
+    await ctx.send(f'Oh nyo! {member.mention} has been warned.')
+    await ctx.send(embed=embed)
+
+
 # Used to paste copy pasta
 # !prawn
 @client.command()
