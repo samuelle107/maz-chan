@@ -149,7 +149,7 @@ async def on_member_join(member):
     await member.add_roles(role)
     await channel.send(url)
     await channel.send(
-        f'Irasshaimase, {member.mention}!\n\Pwease read the rules at <#{RULES_CHANNEL_ID}>'
+        f'Iwasshaimase, {member.mention}!\nPwease wead da wules at <#{RULES_CHANNEL_ID}>'
     )
 
 
