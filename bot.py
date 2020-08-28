@@ -2,7 +2,6 @@ import asyncio
 # import create_command
 import datetime
 import discord
-import json
 import os
 import logging
 import mysql.connector
