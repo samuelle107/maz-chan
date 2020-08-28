@@ -255,7 +255,7 @@ async def convert(ctx, value: float, current_currency: str, target_currency: str
     try:
         converted_value = round(c.convert(float(value), current_currency.upper(), target_currency.upper()), 2)
         print(converted_value)
-        await ctx.send(f"Hewwo! {converted_value} {current_currency} is {converted_value} {target_currency}!")
+        await ctx.send(f"Hewwo! {value} {current_currency} is {converted_value} {target_currency}!")
     except Exception as e:
         await ctx.send("Uh oh! I am very sowwi. I could not convert that!")
     
