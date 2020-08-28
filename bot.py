@@ -250,11 +250,12 @@ async def puppet(ctx, *args):
                                             
                         
 @client.command()
-async def convert(ctx, value: int, current_currency: str, target_currency: str):
+async def convert(ctx, value: float, current_currency: str, target_currency: str):
     c = CurrencyConverter()
     try:
-        converted_value = c.convert(int(value), current_currency.upper(), target_currency.upper())
-        await ctx.send(f"Hewwo! {round(float(value), 2)} {current_currency} is {converted_value} {target_currency}!")
+        converted_value = round(c.convert(float(value), current_currency.upper(), target_currency.upper()), 2)
+        print(converted_value)
+        await ctx.send(f"Hewwo! {converted_value} {current_currency} is {converted_value} {target_currency}!")
     except Exception as e:
         await ctx.send("Uh oh! I am very sowwi. I could not convert that!")
     
