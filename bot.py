@@ -2,6 +2,7 @@ import asyncio
 # import create_command
 import datetime
 import discord
+import json
 import os
 import logging
 import mysql.connector
@@ -10,6 +11,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from subreddit_scrapper import get_scraped_submissions
 from db_helper import get_all, get_all_conditional, insert, remove, does_exist
+from currency_converter import CurrencyConverter
 
 logging.getLogger().setLevel(logging.INFO)
 
@@ -245,7 +247,14 @@ async def puppet(ctx, *args):
     target_channel_id = int("".join([(s) for s in args[0] if s.isdigit()]))
     channel = client.get_channel(target_channel_id)
     message = " ".join(args[1:])
-    await channel.send(message)                                              
+    await channel.send(message)
+                                            
+                        
+@client.command()
+async def convert(ctx, value, current_currency, target_currency):
+    c = CurrencyConverter()
+    converted_value = c.convert(int(value), current_currency, target_currency)
+    await ctx.send(f"Hewwo! {value} {current_currency} is {converted_value} {target_currency}!")
                                                   
 
 @client.command(aliases=["ak"])
