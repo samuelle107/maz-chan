@@ -120,7 +120,7 @@ async def on_ready():
                                 mentions.add(client.get_user(uid).mention)
                     
                     embed = discord.Embed()
-                    embed.title = submission.title
+                    embed.title = submission.title[:200]
                     embed.url = f"https://redd.it/{submission.id}"
                     image_url = get_url_at(0, submission.selftext_html)
 
