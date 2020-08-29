@@ -132,7 +132,7 @@ async def on_ready():
 
         logging.info(f'{str(datetime.datetime.now())}: Finished scraping')
         con.close()
-        await asyncio.sleep(60)
+        await asyncio.sleep(90)
 
 
 # Called when a new member joins
