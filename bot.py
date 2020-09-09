@@ -30,6 +30,7 @@ RULES_CHANNEL_ID = 744047107866099813
 MECH_MARKET_CHANNEL_ID = 746622430927257721
 KEEB_UPDATES_CHANNEL_ID = 744044577165672449
 ARTISAN_UPDATES_CHANNEL_ID = 746525189738725406
+LOGGING_CHANNEL_ID = 753119801399967804
 
 con_info = dict(
     user=os.getenv("MYSQL_USERNAME"),
@@ -165,7 +166,21 @@ async def on_member_join(member):
 #             1:] in create_command.CUSTOM_COMMAND_LIST.keys():
 #         await message.channel.send(
 #             create_command.CUSTOM_COMMAND_LIST[message.content[1:]])
+@client.event
+async def on_message(message):
+    channel = client.get_channel(LOGGING_CHANNEL_ID)
 
+    if message.author.id == 744060752591061002:
+        return
+    message = f"{message.author}: {message.content}"
+    await channel.send(message)
+
+@client.event
+async def on_reaction_add(reaction, user):
+    channel = client.get_channel(LOGGING_CHANNEL_ID)
+
+    message = f"{user}: {reaction}"
+    await channel.send(message)
 
 # Used to paste copy pasta
 # !egghead
