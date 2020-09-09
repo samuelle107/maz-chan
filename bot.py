@@ -166,14 +166,15 @@ async def on_member_join(member):
 #             1:] in create_command.CUSTOM_COMMAND_LIST.keys():
 #         await message.channel.send(
 #             create_command.CUSTOM_COMMAND_LIST[message.content[1:]])
-@client.event
-async def on_message(message):
-    channel = client.get_channel(LOGGING_CHANNEL_ID)
-
-    if message.author.id == 744060752591061002:
-        return
-    message = f"{message.author}: {message.content}"
-    await channel.send(message)
+# @client.event
+# async def on_message(message):
+#     channel = client.get_channel(LOGGING_CHANNEL_ID)
+#     if message.author == client.user:
+#         return
+#     await channel.send(message)
+#     if message.author.id != 744060752591061002 and message.channel.id != LOGGING_CHANNEL_ID:
+#         message = f"{message.author}: {message.content}"
+#         await channel.send(message)
 
 @client.event
 async def on_reaction_add(reaction, user):
