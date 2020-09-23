@@ -141,7 +141,7 @@ async def on_ready():
 @client.event
 async def on_member_join(member):
     channel = client.get_channel(WELCOME_CHANNEL_ID)
-    url = "https://imgur.com/ANEL8c3"
+    url = "https://i.imgur.com/ANEL8c3.mp4"
     role = discord.utils.get(member.guild.roles, name="Refugee")
 
     con = mysql.connector.connect(**con_info)
