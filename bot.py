@@ -1,5 +1,4 @@
 import asyncio
-# import create_command
 import datetime
 import discord
 import os
@@ -118,7 +117,10 @@ async def on_ready():
                             forbidden_words = query_forbidden_words_by_user_id(uid)
 
                             if not any(forbidden_word.lower() in submission.title.lower() for forbidden_word in forbidden_words):
-                                mentions.add(client.get_user(uid).mention)
+                                try:
+                                    mentions.add(client.get_user(uid).mention)
+                                except Exception as e:
+                                    logging.info(f'{str(datetime.datetime.now())}: {e}')
                     
                     embed = discord.Embed()
                     embed.title = submission.title[:200]
@@ -153,28 +155,6 @@ async def on_member_join(member):
     await channel.send(
         f'Iwasshaimase, {member.mention}!\nPwease wead da wules at <#{RULES_CHANNEL_ID}>'
     )
-
-
-# # called when any message is sent
-# # this event is used to check if custom command is used
-# @client.event
-# async def on_message(message):
-#     if message.author == client.user:
-#         return
-
-#     if message.content[0] == "~" and message.content[
-#             1:] in create_command.CUSTOM_COMMAND_LIST.keys():
-#         await message.channel.send(
-#             create_command.CUSTOM_COMMAND_LIST[message.content[1:]])
-# @client.event
-# async def on_message(message):
-#     channel = client.get_channel(LOGGING_CHANNEL_ID)
-#     if message.author == client.user:
-#         return
-#     await channel.send(message)
-#     if message.author.id != 744060752591061002 and message.channel.id != LOGGING_CHANNEL_ID:
-#         message = f"{message.author}: {message.content}"
-#         await channel.send(message)
 
 @client.event
 async def on_reaction_add(reaction, user):
@@ -365,49 +345,5 @@ async def get_forbidden_words(ctx):
     con.close()
 
     await ctx.send(f"Hewwo! Your keywords are **{', '.join(list(result[1] for result in results))}**.")
-
-# # create a new custom command
-# @client.command()
-# async def ncc(ctx, *args):
-#     command_name = args[0]
-#     if command_name in create_command.CUSTOM_COMMAND_LIST.keys():
-#         await ctx.send(
-#             f"`{command_name}` already exists. Are you sure you want to continue (y/n)"
-#         )
-#         msg = await client.wait_for(
-#             'message',
-#             check=lambda m: m.author == ctx.author and m.channel == ctx.channel
-#             and m.content in ['y', 'n'])
-#         if msg.content == 'n':
-#             await ctx.send("**Aborting...**")
-#             return
-#     await ctx.send(
-#         f"please enter the text the command `{command_name}` should display when it is called"
-#     )
-#     msg = await client.wait_for(
-#         'message',
-#         check=lambda m: m.author == ctx.author and m.channel == ctx.channel)
-#     create_command.save_command(command_name, msg.content)
-
-
-# # list all custom commands
-# @client.command()
-# async def lcc(ctx):
-#     formatted_string = ""
-#     for k, v in create_command.CUSTOM_COMMAND_LIST:
-#         formatted_string += f"`{k}`: `{v}`\n"
-#     await ctx.send(formatted_string)
-
-
-# # remove a custom command
-# @client.command()
-# async def rcc(ctx, *args):
-#     command_name = args[0][1:]
-#     print(command_name)
-#     if command_name in create_command.CUSTOM_COMMAND_LIST.keys():
-#         create_command.remove_command(command_name)
-#         await ctx.send(f"Successfully deleted command `{command_name}`")
-#     else:
-#         await ctx.send(f"No such command `{command_name}`")
 
 client.run(DISCORD_BOT_TOKEN)
