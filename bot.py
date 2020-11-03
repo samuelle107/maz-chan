@@ -5,6 +5,7 @@ import os
 import logging
 import mysql.connector
 import re
+import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 from subreddit_scrapper import get_scraped_submissions
@@ -14,6 +15,9 @@ from currency_converter import CurrencyConverter
 logging.getLogger().setLevel(logging.INFO)
 
 load_dotenv()
+
+intents = discord.Intents.default()
+intents.members = True
 
 # Secret variable. Do not push to github
 # Either ask me for the token or make your own bot
@@ -40,7 +44,7 @@ con_info = dict(
     use_unicode=True
 )
 
-client = commands.Bot(command_prefix='!')
+client = commands.Bot(command_prefix='!', intents=intents)
 
 
 def query_keywords() -> list:
@@ -142,19 +146,23 @@ async def on_ready():
 # Will add them to a refugee role, send a gif, and message
 @client.event
 async def on_member_join(member):
-    channel = client.get_channel(WELCOME_CHANNEL_ID)
-    url = "https://i.imgur.com/ANEL8c3.mp4"
-    role = discord.utils.get(member.guild.roles, name="Refugee")
+    try:
+        channel = client.get_channel(WELCOME_CHANNEL_ID)
+        url = "https://i.imgur.com/ANEL8c3.mp4"
+        role = discord.utils.get(member.guild.roles, name="Refugee")
 
-    con = mysql.connector.connect(**con_info)
-    insert(con, "users", ["user_id"], [member.id])
-    con.close()
+        con = mysql.connector.connect(**con_info)
+        insert(con, "users", ["user_id"], [member.id])
+        con.close()
 
-    await member.add_roles(role)
-    await channel.send(url)
-    await channel.send(
-        f'Iwasshaimase, {member.mention}!\nPwease wead da wules at <#{RULES_CHANNEL_ID}>'
-    )
+        await member.add_roles(role)
+        await channel.send(url)
+        await channel.send(
+            f'Iwasshaimase, {member.mention}!\nPwease wead da wules at <#{RULES_CHANNEL_ID}>'
+        )
+    except Exception as e:
+        logging.info(f'{str(datetime.datetime.now())}: Added {member}: ')
+
 
 @client.event
 async def on_reaction_add(reaction, user):
